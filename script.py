@@ -1,7 +1,7 @@
 import datetime
 import platform 
 
-artifact_file = "/tmp/artifact.txt"
+artifact_file = "/output/artifact.txt"
 
 with open(artifact_file, "w") as f:
     f.write("DATE/TIME: " + str(datetime.datetime.now())+"\n")

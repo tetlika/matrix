@@ -26,10 +26,11 @@ pipeline {
             steps {
                 script {
                     def dockerImage = docker.build('my_image:latest')
-                    dockerImage.inside {
+                    dockerImage.inside('-v $WORKSPACE:/output -u root') {
                         sh 'python3 /script.py'
-                        sh 'ls -la /tmp/artifact.txt'
+                        sh 'ls -la /output/artifact.txt'
                     }
+                    sh 'ls artifact.txt'
                 }
             }
         }
