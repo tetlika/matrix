@@ -47,7 +47,7 @@ pipeline {
             }
         }
 
-        stage('Test') 
+        stage('Test') {
             steps {           
               withAWS(credentials: 'aws', region: 'us-east-1') {
                       sh '''
