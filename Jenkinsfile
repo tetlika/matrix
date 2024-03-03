@@ -48,6 +48,7 @@ pipeline {
         }
 
         stage('Test') {
+            triggers{cron ('* * * * *')}
             steps {
               withAWS(credentials: 'aws', region: 'us-east-1') {
                       sh '''
@@ -55,27 +56,6 @@ pipeline {
                           aws s3 cp s3://matrixsuper/artifact.txt artifact.txt_${timestamp};
                           if [ -s artifact.txt_${timestamp} ]; then echo "file not not empty, good"; else echo "file empty"; exit 1; fi      
                       '''
-                }
-            }
-        }
-
-        stage('Manual Stage') {
-            steps {
-                script {
-                    def userInput = input(
-                        id: 'userInput',
-                        message: 'Select a stage to run',
-                        parameters: [
-                            choice(choices: ['Test', 'All'], description: 'Select a stage to run', name: 'Stage')
-                        ]
-                    )
-                    switch (userInput) {
-                        case 'Test':
-                            build job: 'new_job', parameters: [string(name: 'TARGET_STAGE', value: 'Test')]
-                            break
-                        case 'All':
-                            break
-                    }
                 }
             }
         }
