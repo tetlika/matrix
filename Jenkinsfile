@@ -27,7 +27,7 @@ pipeline {
                     def dockerImage = docker.build('my_image:latest')
                     dockerImage.inside('-v $WORKSPACE:/output -u root') {
                         sh 'python3 /script.py'
-                        sh 'sleep 31'
+                        sh 'sleep 30'
                     }
                 }
             }
