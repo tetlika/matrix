@@ -48,8 +48,9 @@ pipeline {
         }
 
         stage('Test') {
-            triggers{cron ('* * * * *')}
+            
             steps {
+              triggers{cron ('* * * * *')}
               withAWS(credentials: 'aws', region: 'us-east-1') {
                       sh '''
                           timestamp=$(date +%s); 
