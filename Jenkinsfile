@@ -8,7 +8,7 @@ pipeline {
     triggers {
         cron('*/30 * * * *') //trigger by schedule every 30 mins
         pollSCM('* * * * *') //trigger on change in repo
-        githubPullRequest('* * * * *')
+        githubPullRequests('* * * * *')
     }
 
     stages {
