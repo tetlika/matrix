@@ -34,9 +34,12 @@ pipeline {
         stage('Deploy') {
             steps {
               withAWS(credentials: 'aws', region: 'us-east-1') {
-                      sh 'timestamp=$(date +%s); aws s3 cp s3://matrixsuper/artifact.txt artifact.txt_${timestamp}'
-                      sh 'aws s3 cp artifact.txt s3://matrixsuper/'
-                      sh 'aws s3 cp artifact.txt_${timestamp} s3://matrixsuper/'
+                      sh """
+                          timestamp=$(date +%s); 
+                          aws s3 cp s3://matrixsuper/artifact.txt artifact.txt_${timestamp};
+                          aws s3 cp artifact.txt s3://matrixsuper/;
+                          aws s3 cp artifact.txt_${timestamp} s3://matrixsuper/
+                         """
                 }
             }
         }
