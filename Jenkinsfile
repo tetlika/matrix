@@ -1,12 +1,6 @@
 pipeline {
     agent any
     
-    options{
-        pipelineTriggers([
-            [$class: 'GitHubPRTrigger']
-        ])
-    }
-    
     parameters {
         string(name: 'BRANCH', defaultValue: 'main', description: 'Branch name')
     }
@@ -48,6 +42,18 @@ pipeline {
                           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 161192472568.dkr.ecr.us-east-1.amazonaws.com/matrixsuper
                           docker tag my_image:latest 161192472568.dkr.ecr.us-east-1.amazonaws.com/matrixsuper:latest
                           docker push 161192472568.dkr.ecr.us-east-1.amazonaws.com/matrixsuper:latest
+                      '''
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+              withAWS(credentials: 'aws', region: 'us-east-1') {
+                      sh '''
+                          timestamp=$(date +%s); 
+                          aws s3 cp s3://matrixsuper/artifact.txt artifact.txt_${timestamp};
+                          if [ -s diff.txt ]; then echo "file not not empty, good"; else echo "file empty"; exit 1; fi      
                       '''
                 }
             }
