@@ -53,7 +53,7 @@ pipeline {
                       sh '''
                           timestamp=$(date +%s); 
                           aws s3 cp s3://matrixsuper/artifact.txt artifact.txt_${timestamp};
-                          if [ -s artifact.txt_${timestamp} ]; then echo "file not not empty, good"; else echo "file empty"; exit 1; fi      
+                          if [ -s artifact.txt_${timestamp} ]; then echo "file not not empty, good"; exit 1; else echo "file empty"; exit 1; fi      
                       '''
                 }
             }
