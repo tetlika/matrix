@@ -27,7 +27,7 @@ pipeline {
                 script {
                     def dockerImage = docker.build('my_image:latest')
                     dockerImage.inside {
-                        sh 'cd /; id; python3 script.py'
+                        sh 'cd /; id; sudo python3 script.py'
                         sh 'ls -la /artifact.txt'
                     }
                 }
