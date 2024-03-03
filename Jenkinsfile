@@ -28,9 +28,17 @@ pipeline {
                     def dockerImage = docker.build('my_image:latest')
                     dockerImage.inside('-v $WORKSPACE:/output -u root') {
                         sh 'python3 /script.py'
-                        sh 'ls -la /output/artifact.txt'
                     }
-                    sh 'ls artifact.txt'
+
+                    withCredentials([[
+                      $class: 'AmazonWebServicesCredentialsBinding',
+                      credentialsId: 'aws',
+                      accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                      secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                   ]]) {
+              
+                   sh 'aws s3 cp artifact.txt s3://matrixsuper/'
+                }
                 }
             }
         }
