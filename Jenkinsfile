@@ -1,11 +1,11 @@
 pipeline {
     agent any
     
-    properties([
+    options{}
         pipelineTriggers([
             [$class: 'GitHubPRTrigger']
         ])
-    ])
+    }
     
     parameters {
         string(name: 'BRANCH', defaultValue: 'main', description: 'Branch name')
