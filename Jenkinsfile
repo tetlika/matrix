@@ -39,6 +39,9 @@ pipeline {
                           aws s3 cp s3://matrixsuper/artifact.txt artifact.txt_${timestamp};
                           aws s3 cp artifact.txt s3://matrixsuper;
                           aws s3 cp artifact.txt_${timestamp} s3://matrixsuper/
+                          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 161192472568.dkr.ecr.us-east-1.amazonaws.com/matrixsuper
+                          docker tag my_image:latest 161192472568.dkr.ecr.us-east-1.amazonaws.com/matrixsuper:latest
+                          docker push 161192472568.dkr.ecr.us-east-1.amazonaws.com/matrixsuper:latest
                       '''
                 }
             }
