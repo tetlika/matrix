@@ -30,14 +30,9 @@ pipeline {
                         sh 'python3 /script.py'
                     }
 
-                    withCredentials([[
-                      $class: 'AmazonWebServicesCredentialsBinding',
-                      credentialsId: 'aws',
-                      accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                      secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                   ]]) {
+                    withAWS(credentials: 'aws', region: 'us-east-1') {
               
-                   sh 'aws s3 cp artifact.txt s3://matrixsuper/'
+                      sh 'aws s3 cp artifact.txt s3://matrixsuper/'
                 }
                 }
             }
