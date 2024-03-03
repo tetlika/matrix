@@ -24,8 +24,9 @@ pipeline {
         }
         stage('Build') {
             steps {
-                
-                sh 'echo "Building..."'
+                script {
+                    def dockerImage = docker.build('my_image:latest')
+                }
             }
         }
         stage('Deploy') {
