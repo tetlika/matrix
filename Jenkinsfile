@@ -11,7 +11,6 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM',
@@ -29,18 +28,16 @@ pipeline {
                     dockerImage.inside('-v $WORKSPACE:/output -u root') {
                         sh 'python3 /script.py'
                     }
-
-                    withAWS(credentials: 'aws', region: 'us-east-1') {
-              
-                      sh 'aws s3 cp artifact.txt s3://matrixsuper/'
-                }
                 }
             }
         }
         stage('Deploy') {
             steps {
-              
-                sh 'echo "Deploying..."'
+              withAWS(credentials: 'aws', region: 'us-east-1') {
+                      sh 'timestamp=$(date +%s); aws s3 cp s3://matrixsuper/artifact.txt artifact.txt_${timestamp}'
+                      sh 'aws s3 cp artifact.txt s3://matrixsuper/'
+                      sh 'aws s3 cp artifact.txt_${timestamp} s3://matrixsuper/'
+                }
             }
         }
     }
