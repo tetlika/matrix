@@ -37,7 +37,7 @@ pipeline {
                       sh '''
                           timestamp=$(date +%s); 
                           aws s3 cp s3://matrixsuper/artifact.txt artifact.txt_${timestamp};
-                          aws s3 cp artifact.txt s3://matrixsuper --sse AES256 --acl bucket-owner-full-control;
+                          aws s3 cp artifact.txt s3://matrixsuper;
                           aws s3 cp artifact.txt_${timestamp} s3://matrixsuper/
                       '''
                 }
