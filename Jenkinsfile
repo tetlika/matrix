@@ -6,7 +6,7 @@ pipeline {
             [$class: 'GitHubPRTrigger']
         ])
     ])
-    
+
     parameters {
         string(name: 'BRANCH', defaultValue: 'main', description: 'Branch name')
     }
