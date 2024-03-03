@@ -49,10 +49,6 @@ pipeline {
 
         stage('Test') {
             steps {
-              when {
-                // Run this stage every minute
-                cron('* * * * *')
-              }
               withAWS(credentials: 'aws', region: 'us-east-1') {
                       sh '''
                           timestamp=$(date +%s); 
@@ -62,5 +58,27 @@ pipeline {
                 }
             }
         }
+
+        stage('Manual Stage') {
+            steps {
+                script {
+                    def userInput = input(
+                        id: 'userInput',
+                        message: 'Select a stage to run',
+                        parameters: [
+                            choice(choices: ['Test', 'All'], description: 'Select a stage to run', name: 'Stage')
+                        ]
+                    )
+                    switch (userInput) {
+                        case 'Test':
+                            build job: 'new_job', parameters: [string(name: 'TARGET_STAGE', value: 'Test')]
+                            break
+                        case 'All':
+                            break
+                    }
+                }
+            }
+        }
+
     }
 }
