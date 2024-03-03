@@ -6,8 +6,8 @@ pipeline {
     }
 
     triggers {
-     
-        pollSCM('*/3 * * * *') 
+        cron('*/30 * * * *') #trigger by schedule every 30 mins
+        pollSCM('* * * * *') #trigger on change in repo
     }
 
     stages {
@@ -47,9 +47,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            when{cron ('* * * * *')}
-
+        stage('Test') 
             steps {           
               withAWS(credentials: 'aws', region: 'us-east-1') {
                       sh '''
